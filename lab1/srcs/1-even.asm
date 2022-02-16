@@ -8,5 +8,3 @@ l:
 	5
 	3
 	.text
-// your code here
-// remove these comments!
