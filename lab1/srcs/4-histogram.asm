@@ -35,7 +35,3 @@ marks:
 n:
   20
 	.text
-// your code here
-// you may change the numbers in the marks array. Change the size of the array n suitably; The histogram should be in count.
-// the name of the arrays to remain unchanged
-// remove these comments!
