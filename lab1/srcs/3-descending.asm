@@ -1,34 +1,39 @@
-	.data
+    .data
 a:
-	70
-	50
-	40
-	20
-	10
-	30
-	80
-	60
+    70
+    50
+    40
+    20
+    10
+    30
+    80
+    60
 n:
-	8
-	.text
+    8
+    .text
 main:
     load %x0, $n, %x3
-    subi %x6, 1, %x6
-iter:
-    addi %x6, 1, %x6
-    load $x6, $a, %x4
-    add %x0, %x6, %x7
-    bgt %x6, %x3, endl
+    subi %x0, 1, %x4
+    add %x0, %x0, %x5
+    addi %x0, 4, %x9
 loop:
-    addi %x7, 1, x7
-    load %x7, $a, %x5
-    bgt %x5, %x4, swap
-    bgt %x7, %x3, iter
-    jmp loop
+    addi %x4, 1, %x4
+    beq %x3, %x4, finish
+    load %x4, $a, %x5
+    subi %x4, 1, %x6
+    jmp cmploop
+cmploop:
+    addi %x6, 1, %x6
+    beq %x6, %x3, loop
+    load %x6, $a, %x7
+    bgt %x7, %x5, swap
+    jmp cmploop
 swap:
-    store %x4, $a, %x7
-    store %x5, $a, %x6
-    load %x6, $a, %x4
-    jmp loop
-endl:
+    add %x0, %x0, %x8
+    add %x5, %x0, %x8
+    store %x7, $a, %x4
+    store %x8, $a, %x6
+    load %x4, $a, %x5
+    jmp cmploop
+finish:
     end
