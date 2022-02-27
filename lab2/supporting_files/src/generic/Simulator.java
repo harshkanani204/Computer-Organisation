@@ -18,6 +18,19 @@ public class Simulator
 		ParsedProgram.parseCodeSection(assemblyProgramFile, firstCodeAddress);
 		ParsedProgram.printState();
 	}
+	public static Integer type(Instruction in, char ch)
+	{
+		Integer h = 0;
+		if(ch=='a')
+		h = in.getSourceOperand1().getValue();
+		else if (ch=='b')
+		h = in.getSourceOperand2().getValue();
+		else if (ch=='c')
+		h = in.getDestinationOperand().getValue();
+		else if (ch == 'd')
+		h = in.getProgramCounter();
+		return h;
+	}
 	public static Integer modify(Instruction x)
 	{
 		Integer val  = 0;
@@ -88,6 +101,43 @@ public class Simulator
 	public static void assemble()
     {
         //TODO your assembler code
+
+        try 
+        {
+            DataOutputStream dataOutput = new DataOutputStream(new FileOutputStream(output));
+            
+            
+
+            try 
+            {
+                dataOutput.writeInt(ParsedProgram.mainFunctionAddress);
+
+                for (Integer x : ParsedProgram.data) 
+                {
+                    dataOutput.writeInt(x);
+                }
+
+                for (Instruction x : ParsedProgram.code) 
+                {
+                    dataOutput.writeInt(modify(x));
+                }
+
+                dataOutput.flush();
+                dataOutput.close();
+            } 
+            
+            catch (IOException error) 
+            {
+                Misc.printErrorAndExit(error.toString());
+            }
+            
+
+        } 
+        
+        catch (FileNotFoundException error) 
+        {
+            Misc.printErrorAndExit(error.toString());
+        }
 
     }
 	
