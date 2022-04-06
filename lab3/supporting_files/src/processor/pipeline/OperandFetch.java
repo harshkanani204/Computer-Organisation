@@ -46,6 +46,8 @@ public class OperandFetch {
 
 	public void performOF() {
 		if (IF_OF_Latch.isOF_enable()) {
+			// TODO
+
 			OperationType[] operationType = OperationType.values();
 			String instruction = Integer.toBinaryString(IF_OF_Latch.getInstruction());
 			while (instruction.length() != 32) {
@@ -123,12 +125,14 @@ public class OperandFetch {
 					registerNo = Integer.parseInt(instruction.substring(5, 10), 2);
 					rs1.setValue(registerNo);
 
-										rs2 = new Operand();
+					// destination register
+					rs2 = new Operand();
 					rs2.setOperandType(OperandType.Register);
 					registerNo = Integer.parseInt(instruction.substring(10, 15), 2);
 					rs2.setValue(registerNo);
 
-										rd = new Operand();
+					// Immediate value
+					rd = new Operand();
 					rd.setOperandType(OperandType.Immediate);
 					imm = instruction.substring(15, 32);
 					imm_val = Integer.parseInt(imm, 2);
@@ -145,19 +149,22 @@ public class OperandFetch {
 					break;
 
 				default:
+					// Source register 1
 					rs1 = new Operand();
 					rs1.setOperandType(OperandType.Register);
 					registerNo = Integer.parseInt(instruction.substring(5, 10), 2);
 					System.out.println(registerNo);
 					rs1.setValue(registerNo);
 
-										rd = new Operand();
+					// Destination register
+					rd = new Operand();
 					rd.setOperandType(OperandType.Register);
 					registerNo = Integer.parseInt(instruction.substring(10, 15), 2);
 					System.out.println(registerNo);
 					rd.setValue(registerNo);
 
-										rs2 = new Operand();
+					// Immediate values
+					rs2 = new Operand();
 					rs2.setOperandType(OperandType.Immediate);
 					imm = instruction.substring(15, 32);
 					System.out.println(imm);

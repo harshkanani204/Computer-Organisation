@@ -25,8 +25,8 @@ public class Execute {
 		Instruction instruction = OF_EX_Latch.getInstruction();
 		System.out.println(instruction);
 		EX_MA_Latch.setInstruction(instruction);
-		OperationType operation_type = instruction.getOperationType();
-		int opcode = Arrays.asList(OperationType.values()).indexOf(operation_type);
+		OperationType op_type = instruction.getOperationType();
+		int opcode = Arrays.asList(OperationType.values()).indexOf(op_type);
 		int currentPC = containingProcessor.getRegisterFile().getProgramCounter() - 1;
 
 		int alu_result = 0;
@@ -37,7 +37,7 @@ public class Execute {
 			int op2 = containingProcessor.getRegisterFile().getValue(
 					instruction.getSourceOperand2().getValue());
 
-			switch (operation_type) {
+			switch (op_type) {
 				case add:
 					alu_result = op1 + op2;
 					break;
@@ -84,7 +84,7 @@ public class Execute {
 			int op1 = containingProcessor.getRegisterFile().getValue(i);
 			int op2 = instruction.getSourceOperand2().getValue();
 
-			switch (operation_type) {
+			switch (op_type) {
 				case addi:
 					alu_result = op1 + op2;
 					break;
@@ -154,7 +154,7 @@ public class Execute {
 			System.out.println(op1);
 			System.out.println(op2);
 			System.out.println(instruction);
-			switch (operation_type) {
+			switch (op_type) {
 				case beq:
 					if (op1 == op2) {
 						alu_result = imm + currentPC;

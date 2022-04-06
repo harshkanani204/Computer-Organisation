@@ -22,6 +22,9 @@ public class RegisterWrite {
 	{
 		if(MA_RW_Latch.isRW_enable())
 		{
+			//TODO
+			
+			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			Instruction instruction = MA_RW_Latch.getInstruction();
 			int alu_result = MA_RW_Latch.getALU_result();
 			OperationType op_type = instruction.getOperationType();

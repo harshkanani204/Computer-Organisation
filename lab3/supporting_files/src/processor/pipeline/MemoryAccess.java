@@ -24,8 +24,8 @@ public class MemoryAccess {
 			Instruction instruction = EX_MA_Latch.getInstruction();
 			int alu_result = EX_MA_Latch.getALU_result();
 			MA_RW_Latch.setALU_result(alu_result);
-			OperationType optype = instruction.getOperationType();
-			switch(optype)
+			OperationType op_type = instruction.getOperationType();
+			switch(op_type)
 			{
 				case store:
 					int val_store = containingProcessor.getRegisterFile().getValue(

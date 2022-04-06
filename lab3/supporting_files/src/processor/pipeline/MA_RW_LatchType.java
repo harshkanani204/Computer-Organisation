@@ -5,8 +5,8 @@ public class MA_RW_LatchType {
 	
 	boolean RW_enable;
 	Instruction instruction;
-	int loadresult;
-	int aluresult;
+	int load_result;
+	int alu_result;
 	
 	public MA_RW_LatchType()
 	{
@@ -25,24 +25,24 @@ public class MA_RW_LatchType {
 		return instruction;
 	}
 
-	public void setInstruction(Instruction ins) {
-		instruction = ins;
+	public void setInstruction(Instruction inst) {
+		instruction = inst;
 	}
 
-	public void setLoadresult(int result) {
-		loadresult = result;
+	public void setLoad_result(int result) {
+		load_result = result;
 	}
 
-	public int getLoadresult() {
-		return loadresult;
+	public int getLoad_result() {
+		return load_result;
 	}
 
-	public int getALUresult() {
-		return aluresult;
+	public int getALU_result() {
+		return alu_result;
 	}
 
-	public void setALUresult(int result) {
-		aluresult = result;
+	public void setALU_result(int result) {
+		alu_result = result;
 	}
 
 }
