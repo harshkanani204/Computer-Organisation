@@ -36,4 +36,16 @@ public class Statistics {
 	public void setNumberOfCycles(int numberOfCycles) {
 		Statistics.numberOfCycles = numberOfCycles;
 	}
+
+	public static int getNumberOfCycles()
+	{
+		return numberOfCycles;
+	}
+
+	public static int getNumberOfInstructions() 
+	{
+		return numberOfInstructions;	
+	}
+
+	
 }
