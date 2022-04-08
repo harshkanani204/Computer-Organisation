@@ -112,13 +112,13 @@ public class Simulator {
 		while(simulationComplete != true)
 		{
 			processor.getIFUnit().performIF();
-			Clock.incrementClock();
+			//Clock.incrementClock();
 			processor.getOFUnit().performOF();
-			Clock.incrementClock();
+			//Clock.incrementClock();
 			processor.getEXUnit().performEX();
-			Clock.incrementClock();
+			//Clock.incrementClock();
 			processor.getMAUnit().performMA();
-			Clock.incrementClock();
+			//Clock.incrementClock();
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
 
