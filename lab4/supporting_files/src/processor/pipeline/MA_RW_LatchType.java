@@ -1,4 +1,5 @@
 package processor.pipeline;
+
 import generic.Instruction;
 
 public class MA_RW_LatchType {
@@ -7,10 +8,12 @@ public class MA_RW_LatchType {
 	Instruction instruction;
 	int load_result;
 	int alu_result;
+	boolean NOP;
 	
 	public MA_RW_LatchType()
 	{
 		RW_enable = false;
+		NOP = false;
 	}
 
 	public boolean isRW_enable() {
@@ -44,5 +47,12 @@ public class MA_RW_LatchType {
 	public void setALU_result(int result) {
 		alu_result = result;
 	}
-
+	
+	public boolean getIsNOP() {
+		return NOP;
+	}
+	
+	public void setIsNOP(boolean is_NOP) {
+		NOP = is_NOP;
+	}
 }

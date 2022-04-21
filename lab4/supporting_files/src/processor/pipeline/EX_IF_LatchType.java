@@ -4,8 +4,9 @@ public class EX_IF_LatchType {
 
 	boolean IS_enable;
 	int PC;
-
-	public EX_IF_LatchType() {
+	
+	public EX_IF_LatchType()
+	{
 		IS_enable = false;
 	}
 
@@ -25,4 +26,5 @@ public class EX_IF_LatchType {
 	public int getPC() {
 		return PC;
 	}
+
 }

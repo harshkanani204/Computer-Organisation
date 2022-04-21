@@ -1,12 +1,14 @@
 package generic;
 
-import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 
 import processor.Clock;
 import processor.Processor;
+import generic.Statistics;
 
 public class Simulator {
 		
@@ -16,12 +18,18 @@ public class Simulator {
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
 		Simulator.processor = p;
-		loadProgram(assemblyProgramFile);
+		try
+		{
+			loadProgram(assemblyProgramFile);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		simulationComplete = false;
 	}
 	
-	static void loadProgram(String assemblyProgramFile)
+	static void loadProgram(String assemblyProgramFile) throws IOException
 	{
 		/*
 		 * TODO
@@ -33,101 +41,67 @@ public class Simulator {
 		 *     x1 = 65535
 		 *     x2 = 65535
 		 */
-
-		try {
-			
-				System.out.println(assemblyProgramFile);
-				BufferedInputStream bufferistream = new BufferedInputStream(new FileInputStream(assemblyProgramFile));
-				int pcValue,readingLine,noLineAssemblyFile,data,code;
-
-				readingLine = 0;
-				pcValue = 0;
-				data = -1;
-				code = data + 1;
-				byte[] tempInstruction = new byte[4];
-				noLineAssemblyFile = bufferistream.read(tempInstruction,0,4);
-
-				if(noLineAssemblyFile != -1)
-				{
-					pcValue = ByteBuffer.wrap(tempInstruction).getInt();
-					processor.getRegisterFile().setProgramCounter(pcValue);
-				}
-
-				while(1>0)
-				{
-					if (readingLine > pcValue - 1) 
-					{
-						break;	
-					}
-
-					noLineAssemblyFile = bufferistream.read(tempInstruction,0,4);
-					data++;
-					code = data;
-					readingLine = readingLine + 1;
-
-					int n = ByteBuffer.wrap(tempInstruction).getInt();
-					processor.getMainMemory().setWord(data, n);
-				}
-
-				noLineAssemblyFile = bufferistream.read(tempInstruction,0,4);
-				while(1>0)
-				{
-					if(noLineAssemblyFile == -1)
-					{
-						break;
-					}
-
-					readingLine++;
-					code++;
-
-					int k;
-					k = ByteBuffer.wrap(tempInstruction).getInt();
-					processor.getMainMemory().setWord(code, k);
-					noLineAssemblyFile = bufferistream.read(tempInstruction,0,4);
-				}
-
-			int r0 = 0; 
-			int r1 = 1;
-			int r2 = 2;
-			int value;
-			value = (int)Math.pow(2,16);
-			value = value - 1;
-			processor.getRegisterFile().setValue(r0, 0);
-			processor.getRegisterFile().setValue(r1, value);
-			processor.getRegisterFile().setValue(r2, value);
-
-
-		} catch (IOException error) {
-			error.printStackTrace();
+		InputStream is = null;
+		try
+		{
+			is = new FileInputStream(assemblyProgramFile);
 		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		DataInputStream dis = new DataInputStream(is);
+
+		int address = -1;
+		while(dis.available() > 0)
+		{
+			int next = dis.readInt();
+			if(address == -1)
+			{
+				processor.getRegisterFile().setProgramCounter(next);
+			}
+			else
+			{
+				processor.getMainMemory().setWord(address, next);
+			}
+			address += 1;
+		}
+        
+        processor.getRegisterFile().setValue(0, 0);
+        processor.getRegisterFile().setValue(1, 65535);
+        processor.getRegisterFile().setValue(2, 65535);
+        
+        //System.out.println(processor.getRegisterFile().getProgramCounter());
+        //String output = processor.getMainMemory().getContentsAsString(0, 15);
+        //System.out.println(output);
 	}
-	
+			
 	public static void simulate()
 	{
-		Statistics x;
-		x = new Statistics();
-		x.setNumberOfCycles(0);
-		x.setNumberOfInstructions(0);
-
-		while(simulationComplete != true)
+		while(simulationComplete == false)
 		{
-			processor.getIFUnit().performIF();
-			//Clock.incrementClock();
-			processor.getOFUnit().performOF();
-			//Clock.incrementClock();
-			processor.getEXUnit().performEX();
-			//Clock.incrementClock();
-			processor.getMAUnit().performMA();
-			//Clock.incrementClock();
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
+			processor.getMAUnit().performMA();
+			Clock.incrementClock();	
+			processor.getEXUnit().performEX();
+			Clock.incrementClock();	
+			processor.getOFUnit().performOF();
+			Clock.incrementClock();
+			processor.getIFUnit().performIF();
+			Clock.incrementClock();
 
-			int noIns,noCycle;
-			noIns = x.getNumberOfInstructions() + 1; 
-			noCycle = x.getNumberOfCycles() + 1;
-			x.setNumberOfCycles(noCycle);
-			x.setNumberOfInstructions(noIns);
+			Statistics.setNumberOfInstructions(Statistics.getNumberOfInstructions() + 1);
+			Statistics.setNumberOfCycles(Statistics.getNumberOfCycles() + 1);
 		}
+		
+		// TODO
+		// set statistics
+		
+		//print statistics
+		System.out.println("Number of Cycles: " + Statistics.getNumberOfCycles());
+		System.out.println("Number of OF Stalls: " + (Statistics.getNumberOfInstructions() - Statistics.getNumberOfRegisterWriteInstructions()));
+		System.out.println("Number of Wrong Branch Instructions: " + Statistics.getNumberOfBranchTaken());
 	}
 	
 	public static void setSimulationComplete(boolean value)

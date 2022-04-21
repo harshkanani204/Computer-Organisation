@@ -1,15 +1,18 @@
 package processor.pipeline;
+
 import generic.Instruction;
 
 public class EX_MA_LatchType {
 	
 	boolean MA_enable;
 	int alu_result;
+	boolean NOP;
 	Instruction instruction;
 
 	public EX_MA_LatchType()
 	{
 		MA_enable = false;
+		NOP = false;
 	}
 
 	public boolean isMA_enable() {
@@ -34,6 +37,14 @@ public class EX_MA_LatchType {
 
 	public void setALU_result(int result) {
 		alu_result = result;
+	}
+	
+	public boolean getIsNOP() {
+		return NOP;
+	}
+	
+	public void setIsNOP(boolean is_NOP) {
+		NOP = is_NOP;
 	}
 
 
